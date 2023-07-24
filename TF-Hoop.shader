@@ -23,6 +23,9 @@ Shader "CocoaMilka/TF-Hoop"
             float4 _Color;
             sampler2D _MainTex;
 
+            float _HoopLoc;
+            float _StretchDist;
+
             // Structs for passing data
 
             struct appdata
@@ -45,8 +48,12 @@ Shader "CocoaMilka/TF-Hoop"
             {
                 v2f OUT;
 
+                // Funky stretchy
+                IN.vertex.x += sin(_Time.y + IN.vertex.y * _StretchDist);
+
                 // Converts from local object space to camera's clip space
                 OUT.position = UnityObjectToClipPos(IN.vertex);
+
                 OUT.uv = IN.uv;
 
                 return OUT;
@@ -54,8 +61,8 @@ Shader "CocoaMilka/TF-Hoop"
 
             fixed4 fragmentFunction (v2f IN) : SV_TARGET
             {
-                return tex2D(_MainTex, IN.uv);
-                //return _Color;
+                fixed4 pixelColor = tex2D(_MainTex, IN.uv);
+                return pixelColor * _Color;
             }
 
 

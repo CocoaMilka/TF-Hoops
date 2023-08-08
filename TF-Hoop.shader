@@ -48,10 +48,10 @@ Shader "CocoaMilka/TF-Hoop"
             {
                 v2f OUT;
 
-                // Funky stretchy
-                IN.vertex.x += sin(_Time.y + IN.vertex.y * _StretchDist);
+                IN.vertex += _HoopLoc;
 
                 // Converts from local object space to camera's clip space
+                // Do all vertex manipulations before this
                 OUT.position = UnityObjectToClipPos(IN.vertex);
 
                 OUT.uv = IN.uv;
